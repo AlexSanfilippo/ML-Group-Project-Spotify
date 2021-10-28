@@ -21,3 +21,4 @@ X2=df.iloc[:,1] #assign second input feature to X2
 #X1, X2, ... XN for N features
 Xwhole=np.column_stack((X1,X2)) #put all inputs into one matrix
 ywhole=df.iloc[:,2]  #output data
+print('Hello world')
