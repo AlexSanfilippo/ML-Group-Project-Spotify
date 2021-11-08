@@ -1,0 +1,7 @@
+1) Test out Spotify API
+
+2) Get authorization from volunteers to use their Spotify accounts.
+
+3) ???
+
+4) Profit
