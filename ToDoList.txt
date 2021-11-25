@@ -1,7 +1,4 @@
-1) Test out Spotify API
-
-2) Get authorization from volunteers to use their Spotify accounts.
-
-3) ???
-
-4) Profit
+- [25/11/21 Dylan] Make sure we all pull/fetch (not sure on difference) the main branch
+- [25/11/21 Dylan] Update README file to relevancy
+- [25/11/21 Dylan] Start training models in Data_Scripts (open to directory rename here)
+- [25/11/21 Dylan] Improve version documentation (I am guilty of this) 
