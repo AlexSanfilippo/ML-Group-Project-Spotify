@@ -1,2 +1,3 @@
 # ignore directorys using following format
 .ipynb_checkpoints/
+'Data_Scripts/.ipynb_checkpoints/'
