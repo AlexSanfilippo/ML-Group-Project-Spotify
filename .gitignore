@@ -9,3 +9,4 @@ LatexReport/*.aux
 LatexReport/*.log
 LatexReport/*.out
 LatexReport/*.synctex.gz
+LatexReport/*.toc
