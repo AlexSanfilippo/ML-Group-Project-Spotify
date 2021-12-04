@@ -1,3 +1,11 @@
 # ignore directorys using following format
+
+# Useless JupyterNotebook compilation products
 .ipynb_checkpoints/
-'Data_Scripts/.ipynb_checkpoints/'
+Data_Scripts/.ipynb_checkpoints/
+
+# Useless Latex compilation products
+LatexReport/*.aux
+LatexReport/*.log
+LatexReport/*.out
+LatexReport/*.synctex.gz
