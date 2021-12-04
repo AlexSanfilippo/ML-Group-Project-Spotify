@@ -1,0 +1,104 @@
+\documentclass[10pt, a4]{article} % article for short, book for long [thesis]
+
+\usepackage{graphicx} % support the \includegraphics command and options
+\graphicspath{{../Images/}}
+\usepackage{listings} %lslisting for code snippets
+\usepackage{color} %colouring code in lstlisting
+\usepackage{hyperref} %hyper-links when referencing
+\usepackage[export]{adjustbox} %for figure alignment
+\usepackage[a4paper, left=2cm, right=2cm, top=2.5cm, bottom=3cm]{geometry} %for setting page margin.
+\usepackage{wrapfig} %wrapping text around figure
+\usepackage{paracol} %splitting page parallel
+\usepackage{amsmath} %maths equations
+\usepackage[font=small,labelfont=bf]{caption} %changing caption font size
+\usepackage{multirow} %multirow tables
+\usepackage{adjustbox,lipsum} %setting table size
+\usepackage{mathtools} %multivalue functions
+\usepackage[colorinlistoftodos]{todonotes} %Todo notes/comments
+
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Python,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
+
+\hypersetup{pageanchor=false}
+\title{ CS7CS4 Machine Learning\\Group Project}
+\author{Shane Keane, Dylan Kierans, Alexander Sanfilippo}
+\date{\today}
+
+\begin{document}
+\maketitle{}
+
+\section*{Introduction [half page]}
+Streaming platforms are as popular as ever. While the film/TV and podcast streaming sector has seen an increase in competition in recent years, the same can not be said for music platforms. Spotify is the home of music streaming. We take a slight turn away from user-specific recommender systems which the platform is well known for, and instead look at automating the classification of songs into genre-specific playlists. This would be a useful tool for a growing resource such as Spotify. The music platform was founded in 2008, and now contains \href{https://newsroom.spotify.com/company-info/}{over 70 million songs}. That is an average of about 14,000 songs per day since launch, with Spotify reporting earlier this year that they now 'publish' over \href{https://www.youtube.com/watch?v=Vvo-2MrSgFE&ab_channel=Spotify}{60,000 songs per year }. \newline
+
+That's a lot of songs to tag, and its likely Spotify already have advanced deep learning software analysing every part of the platform and user interaction. We hope to imitate a possible genre classification model the multi-billion company may use.
+
+
+\section*{Dataset and Features [1 page]}
+\subsection*{Data Collection}
+
+Spotify provide a free API for developers [https://developer.spotify.com/documentation/web-api/], which we use for data collection in order to compare songs . Spotify stores a whole range of metadata which is accessible via its API such as information about artists, users, podcasts and can be used to return search queries for 3rd party applications. For our project we are just interesting in playlist and song information. In particular, gathering the audio feature attributes of every song in specific playlists.
+
+The project sets out to use these audio features as the input parameters (including feature engineering if necessary) to create an effective multi-class classification model. Features of interest include normalized parameters {acousticness, danceability, energy, instrumentalness, liveness, speechiness, valence}. Other features which aren't normalized but may be of interest include continuous {duration, tempo}, and discrete { key, mode, time signature}
+
+
+\subsection*{Training Data}
+We chose 8 genre-specific spotify playlists each with over 200 songs, to train our models. The genres we chose to work with are:
+\begin{itemize}
+\item Jazz
+\item Country/folk
+\item Classical
+\item Hip Hop
+\item Rock
+\item Kpop
+\item Heavy Metal
+\item Dance
+\end{itemize}
+
+
+Of course music genre isn't entirely objective, so it is expected that there will be noise in training data, and it won't be possible to create a 100\% accurate model. In any case, we had a total of 2300 songs and were left with 2276 after removing duplicates. For each of these songs we gathered all audio features from the API. We then added an additional column to each dataset specifying which playlist number we had got the song from. We now had 2276 input vectors, and a set of 8 possible target values to train the model on.\newline
+
+In order to test models, we perform a 5-fold train/test data split.\newline
+
+\todo[inline]{Comment on not just evaluating model, but also evaluating how explanatory the audio features are}
+
+\section*{Methods [1 page]}
+Our goal was to create an accurate multi-class classification model for a finite number of genres. For the sake of simplicity, and in order to gain an understanding of the audio features from Spotify, we work on just taking the most likely classification from the model predictions. We understand that more complex measures of accuracy can be considered by taking a more dynamic approach to accepting multiple-classes within a certain threshold. In an industry application of such a model this would be a useful consideration.\newline 
+
+However, for the purpose of this project we focused on running a wide variety of models in order to find the one which best captured the behaviour of the data.
+
+
+\todo[inline] {List all our models from most basic $->$ most complex.}
+
+\section*{Experiments/Results/Discussion [2-3 pages]}
+\section*{Summary [100-200 words]}
+\section*{Contributions}
+\section*{Github Link}
+
+
+
+
+
+
+
+
+\end{document}
