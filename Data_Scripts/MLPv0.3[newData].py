@@ -125,24 +125,27 @@ dummyOutput = dummy.predict(xtest)
 
 ###=============CROSS-VALIDATION: MLP============
 
-#1: Number of Hidden Layers
+#1: Number of Nodes in the Hidden Layers
 layerscrossval=False #allows us to switch off without messy commenting-out
 if layerscrossval:
     mean_error=[]; std_error=[]
     hidden_layer_range = [5,10,25,50,75,100]
-    C = 50
+    C = 1
     for n in hidden_layer_range:
         print("hidden layer size %d\n"%n)
         from sklearn.neural_network import MLPClassifier
-        model = MLPClassifier(hidden_layer_sizes=(n), alpha=1.0/C, max_iter=10000)
+        model = MLPClassifier(hidden_layer_sizes=(n), alpha=0, max_iter=10000)
         from sklearn.model_selection import cross_val_score
         scores = cross_val_score(model, xtrain, ytrain, cv=5, scoring='accuracy')
         mean_error.append(np.array(scores).mean())
         std_error.append(np.array(scores).std())
     #Plot the error bar graph
-    plt.errorbar(hidden_layer_range,mean_error,yerr=std_error,linewidth=3)
-    plt.title('Cross-Validation of Hidden Layers by Accuracy with C = %d'%C)
-    plt.xlabel('#hidden layer nodes'); plt.ylabel('Accuracy')
+    plt.errorbar(hidden_layer_range,mean_error,yerr=std_error,linewidth=3,label = 'MLP Alpha=0')
+    plt.plot([0,100],[.33,.33],label = 'Cosine Simularity Baseline')
+    plt.plot([0,100],[.18,.18],label = 'Naive Baseline')
+    #plt.title('Cross-Validation of Hidden Layers by Accuracy with C = %d'%C)
+    plt.legend(loc="best")
+    plt.xlabel('Number of Hidden Layer Nodes'); plt.ylabel('Accuracy')
     plt.show()
 #2: Value of L2 regularization coefficient C
 Ccrossval = False
@@ -158,50 +161,76 @@ if Ccrossval:
         mean_error.append(np.array(scores).mean())
         std_error.append(np.array(scores).std())
     #Plot the error bar graph
-    plt.errorbar(C_range[0:4],mean_error[0:4],yerr=std_error[0:4],linewidth=3)
-    plt.title('Cross-Validation of C by Accuracy')
+    plt.errorbar(C_range,mean_error,yerr=std_error,linewidth=3, label = "MLP")
+    plt.plot([0,1000],[.33,.33],label = 'Cosine Simularity Baseline')
+    plt.plot([0,1000],[.18,.18],label = 'Naive Baseline')
+    #plt.title('Cross-Validation of C by Accuracy')
+    plt.legend(loc="best")
     plt.xlabel('C'); plt.ylabel('Accuracy')
     plt.show()
 
+#number of hidden layers
+nLayerscrossval = True
+if nLayerscrossval:
+    mean_error=[]; std_error=[]
+    layerLayouts = [(50),(25,25),(16,16,16),(12,12,12,12),(10,10,10,10,10)]
+    for LL in layerLayouts:
+        print("Hidden Layers: ",LL,"\n")
+        from sklearn.neural_network import MLPClassifier
+        model = MLPClassifier(hidden_layer_sizes=LL, alpha = 1.0/1000, max_iter=10000)
+        from sklearn.model_selection import cross_val_score
+        scores = cross_val_score(model, xtrain, ytrain, cv=5, scoring='accuracy')
+        mean_error.append(np.array(scores).mean())
+        std_error.append(np.array(scores).std())
+    #Plot the error bar graph
+    plt.errorbar([1,2,3,4,5],mean_error,yerr=std_error,linewidth=3,label='MLP')
+    plt.plot([1,5],[.33,.33],label = 'Cosine Simularity Baseline')
+    plt.plot([1,5],[.18,.18],label = 'Naive Baseline')
+    #plt.title('Cross-Validation of Depth by Accuracy')
+    plt.legend(loc="best")
+    plt.xlabel('Network Depth'); plt.ylabel('Accuracy')
+    plt.show()
+        
 
 
 
-#Creating the MLP Model
-from sklearn.neural_network import MLPClassifier
-model = MLPClassifier(hidden_layer_sizes=(50), alpha=1.0/1000, solver = 'lbfgs',
-                      tol = 0.0001)
-model.max_iter = 10000 #number of training loops until stop
-model.fit(xtrain, ytrain) #train the model
-
-#look at predictions on training and testing data
-trainPreds = model.predict(xtrain)
-mlpPreds = model.predict(xtest)
-
-#get the accuracy of the mlp model
-from sklearn.metrics import accuracy_score
-mlpAcc = accuracy_score(ytest, mlpPreds)
-print("MLP Model Accuracy: %f"%mlpAcc)
-
-#precision of the mlp Model
-from sklearn.metrics import precision_score
-mlpPrec = precision_score(ytest,mlpPreds, average = 'micro')
-print("MLP Model Precision: %f"%mlpPrec)
-
-#accuracy on the training data
-mlpTrainAcc = accuracy_score(ytrain, trainPreds)
-print("MLP Model Accuracy (Training Data): %f"%mlpTrainAcc)
-
-#Create a Confusion Matrix
-from sklearn.metrics import confusion_matrix
-print(confusion_matrix(ytest, mlpPreds))
-
-#Generate AUC statistic 
-preds = model.predict_proba(xtest)
-print(model.classes_)
-from sklearn.metrics import roc_auc_score
-auc = roc_auc_score(ytest, preds, multi_class = 'ovr', average='macro')
-print("AUC for MLP = %f"%auc)
-
+###Creating the MLP Model
+##from sklearn.neural_network import MLPClassifier
+##model = MLPClassifier(hidden_layer_sizes=(50), alpha=1.0/1000, solver = 'lbfgs',
+##                      tol = 0.0001)
+##model.max_iter = 10000 #number of training loops until stop
+##model.fit(xtrain, ytrain) #train the model
+##
+###look at predictions on training and testing data
+##trainPreds = model.predict(xtrain)
+##mlpPreds = model.predict(xtest)
+##
+###get the accuracy of the mlp model
+##from sklearn.metrics import accuracy_score
+##mlpAcc = accuracy_score(ytest, mlpPreds)
+##print("MLP Model Accuracy: %f"%mlpAcc)
+##
+###precision of the mlp Model
+##from sklearn.metrics import precision_score
+##mlpPrec = precision_score(ytest,mlpPreds, average = 'weighted')
+##print("MLP Model Precision: %f"%mlpPrec)
+##
+###accuracy on the training data
+##mlpTrainAcc = accuracy_score(ytrain, trainPreds)
+##print("MLP Model Accuracy (Training Data): %f"%mlpTrainAcc)
+##
+###Create a Confusion Matrix
+##from sklearn.metrics import confusion_matrix
+##print(confusion_matrix(ytest, mlpPreds))
+##
+##
+###Generate AUC statistic 
+##preds = model.predict_proba(xtest)
+##print(model.classes_)
+##from sklearn.metrics import roc_auc_score
+##auc = roc_auc_score(ytest, preds, multi_class = 'ovr', average='macro')
+##print("AUC for MLP = %f"%auc)
+##
 
 
 
